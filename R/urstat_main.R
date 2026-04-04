@@ -66,6 +66,10 @@
 #' x <- cumsum(rnorm(60))
 #' res <- urstat(x, tests = c("ADF", "PP", "KPSS"), strategy = FALSE)
 #'
+#' @importFrom stats lm.fit setNames
+#' @importFrom tseries adf.test pp.test kpss.test
+#' @importFrom urca ur.ers
+#' @importFrom strucchange Fstats
 #' @export
 urstat <- function(x,
                    tests     = "ALL",

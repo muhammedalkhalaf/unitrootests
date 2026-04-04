@@ -53,7 +53,7 @@
 #' result <- qadf(y, tau = 0.5, model = "c", max_lags = 4)
 #' print(result)
 #'
-#' @importFrom stats lm coef residuals var cor AIC BIC lag
+#' @importFrom stats lm coef residuals var cor AIC BIC lag logLik vcov approx qnorm dnorm
 #' @importFrom quantreg rq
 #' @export
 qadf <- function(x, tau = 0.5, model = "c", max_lags = 8, ic = "aic") {
@@ -189,13 +189,8 @@ qadf <- function(x, tau = 0.5, model = "c", max_lags = 8, ic = "aic") {
 ## INTERNAL HELPERS
 ## ===========================================================================
 
-#' Build regression data for QADF
-#'
-#' @param x Numeric vector (full series).
-#' @param lags Non-negative integer: number of augmentation lags.
-#' @param model Character: \code{"c"} or \code{"ct"}.
-#' @return A list with \code{y_dep} and \code{X_mat}.
 #' @keywords internal
+#' @noRd
 .qadf_build_data <- function(x, lags, model) {
   n <- length(x)
   ## First difference
@@ -242,14 +237,8 @@ qadf <- function(x, tau = 0.5, model = "c", max_lags = 8, ic = "aic") {
 }
 
 
-#' Select optimal lag order for QADF via AIC, BIC, or sequential t-stat
-#'
-#' @param x Numeric vector.
-#' @param model Character: \code{"c"} or \code{"ct"}.
-#' @param max_lags Non-negative integer.
-#' @param ic Character: \code{"aic"}, \code{"bic"}, or \code{"tstat"}.
-#' @return Selected lag order (integer).
 #' @keywords internal
+#' @noRd
 .qadf_select_lags <- function(x, model, max_lags, ic) {
   if (ic == "tstat") {
     ## Sequential downward selection: start at max_lags, remove if |t| < 1.645
@@ -287,14 +276,8 @@ qadf <- function(x, tau = 0.5, model = "c", max_lags = 8, ic = "aic") {
 }
 
 
-#' Bandwidth selector for quantile density estimation
-#'
-#' Uses Hall-Sheather bandwidth (as in \pkg{quantreg}).
-#'
-#' @param tau Quantile.
-#' @param n Sample size.
-#' @return Bandwidth scalar.
 #' @keywords internal
+#' @noRd
 .qadf_bandwidth <- function(tau, n) {
   ## Hall-Sheather bandwidth
   alpha <- max(tau, 1 - tau)
@@ -307,12 +290,8 @@ qadf <- function(x, tau = 0.5, model = "c", max_lags = 8, ic = "aic") {
 }
 
 
-#' Kernel sparsity estimate (1/f(0)) for quantile regression
-#'
-#' @param residuals Numeric vector of quantile regression residuals.
-#' @param bw Bandwidth.
-#' @return Scalar sparsity estimate.
 #' @keywords internal
+#' @noRd
 .qadf_sparsity <- function(residuals, bw) {
   n   <- length(residuals)
   u   <- residuals / bw
@@ -325,11 +304,8 @@ qadf <- function(x, tau = 0.5, model = "c", max_lags = 8, ic = "aic") {
 }
 
 
-#' Generalised inverse (fallback for singular XtX)
-#'
-#' @param A Square matrix.
-#' @return Generalised inverse.
 #' @keywords internal
+#' @noRd
 MASS_ginv <- function(A) {
   s  <- svd(A)
   tol <- max(dim(A)) * max(s$d) * .Machine$double.eps
@@ -340,18 +316,8 @@ MASS_ginv <- function(A) {
 }
 
 
-#' Critical values for the QADF test (Hansen 1995)
-#'
-#' Critical values are interpolated from Table 1 of Hansen (1995) for models
-#' with a constant (\code{"c"}) and with a constant and trend (\code{"ct"}).
-#' The values are tabulated at \eqn{\tau \in \{0.1, 0.15, 0.2, \ldots, 0.9\}};
-#' linear interpolation is used for intermediate quantiles.
-#'
-#' @param tau Quantile (0, 1).
-#' @param model Character: \code{"c"} or \code{"ct"}.
-#' @return Named numeric vector with elements \code{cv1}, \code{cv5},
-#'   \code{cv10}.
 #' @keywords internal
+#' @noRd
 .qadf_critical_values <- function(tau, model) {
   ## Critical values from Hansen (1995) Table 1
   ## Rows = tau grid: 0.10, 0.15, 0.20, ..., 0.90

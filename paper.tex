@@ -1,0 +1,112 @@
+\section{Summary}\label{summary}
+
+\texttt{unitrootests} provides a unified framework for unit root and
+stationarity testing in R, integrating a wide range of classical and
+modern tests under a single, consistent interface. The package includes:
+quantile ADF tests following Koenker and Xiao (2004) that allow the
+order of integration to differ across the conditional distribution;
+GARCH-based unit root tests with endogenous structural breaks following
+Narayan and Liu (2015) that account for volatility clustering common in
+financial and energy price series; and a comprehensive battery of
+standard tests (Dickey-Fuller, Phillips-Perron, KPSS, ERS/DF-GLS,
+Zivot-Andrews, and Kobayashi-McAleer) guided by the Elder-Kennedy
+decision strategy Elder and Kennedy (2001). The package wraps and
+extends \texttt{tseries}, \texttt{urca}, and \texttt{strucchange} with
+higher-level wrappers that automate model specification and summarize
+results.
+
+\section{Statement of Need}\label{statement-of-need}
+
+Determining the order of integration is a fundamental step in time
+series econometrics. While R packages such as \texttt{tseries} and
+\texttt{urca} provide individual tests, practitioners must manually
+coordinate test selection, handle structural break detection, and apply
+decision rules across multiple test results. No single R package offers
+GARCH-based unit root tests with endogenous breaks,
+quantile-distributional unit root tests, and classical tests within a
+unified workflow. Researchers in energy economics, finance, and
+macroeconomics frequently require all three approaches: classical tests
+for baseline inference, GARCH-based tests for volatile series, and
+quantile tests to examine tail behavior. \texttt{unitrootests} provides
+this integrated toolkit and implements the systematic Elder-Kennedy
+decision strategy to guide model selection across test specifications.
+
+\section{Usage}\label{usage}
+
+\subsection{Classical Unit Root Battery with Elder-Kennedy
+Strategy}\label{classical-unit-root-battery-with-elder-kennedy-strategy}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(unitrootests)}
+
+\CommentTok{\# Automated battery: ADF, PP, KPSS, DF{-}GLS, Zivot{-}Andrews}
+\NormalTok{result\_ur }\OtherTok{\textless{}{-}} \FunctionTok{urstat}\NormalTok{(y, }\AttributeTok{strategy =} \StringTok{"elder\_kennedy"}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(result\_ur)}
+\FunctionTok{print}\NormalTok{(result\_ur)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Quantile ADF Test}\label{quantile-adf-test}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Quantile ADF: test stationarity across quantiles (Koenker \& Xiao, 2004)}
+\NormalTok{result\_qadf }\OtherTok{\textless{}{-}} \FunctionTok{qadf}\NormalTok{(y, }\AttributeTok{taus =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\FloatTok{0.25}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.75}\NormalTok{, }\FloatTok{0.9}\NormalTok{),}
+                    \AttributeTok{lags =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(result\_qadf)}
+\FunctionTok{plot}\NormalTok{(result\_qadf)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{GARCH Unit Root Test with Structural
+Breaks}\label{garch-unit-root-test-with-structural-breaks}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# GARCH{-}based unit root test with endogenous break (Narayan \& Liu, 2015)}
+\NormalTok{result\_garch }\OtherTok{\textless{}{-}} \FunctionTok{garchur}\NormalTok{(y, }\AttributeTok{max\_breaks =} \DecValTok{1}\NormalTok{, }\AttributeTok{model =} \StringTok{"GARCH"}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(result\_garch)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Implementation}\label{implementation}
+
+\texttt{unitrootests} is built on top of the \texttt{quantreg},
+\texttt{tseries}, \texttt{urca}, and \texttt{strucchange} packages. The
+quantile ADF test in \texttt{qadf()} follows Koenker and Xiao (2004) by
+estimating quantile autoregressions and comparing the quantile-specific
+autoregressive coefficient against the null of a unit root, using
+critical values from the asymptotic distribution. The \texttt{garchur()}
+function implements Narayan and Liu (2015) by fitting a GARCH(1,1) model
+with structural break dummies, computing GLS-detrended data, and
+applying ADF-type tests on the residuals. The \texttt{urstat()} function
+applies the full battery of classical tests and implements the Elder and
+Kennedy (2001) decision tree to navigate model specification (trend,
+drift, or none) based on sequential test outcomes. All test results are
+returned as structured S3 objects with consistent \texttt{print()} and
+\texttt{summary()} methods.
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+\protect\phantomsection\label{refs}
+\begin{CSLReferences}{1}{1}
+\bibitem[\citeproctext]{ref-Elder2001}
+Elder, John, and Peter E. Kennedy. 2001. {``Testing for Unit Roots: What
+Should Students Be Taught?''} \emph{Journal of Economic Education} 32
+(2): 137--46. \url{https://doi.org/10.1080/00220480109595179}.
+
+\bibitem[\citeproctext]{ref-Koenker2004}
+Koenker, Roger, and Zhijie Xiao. 2004. {``Unit Root Quantile
+Autoregression Inference.''} \emph{Journal of the American Statistical
+Association} 99 (467): 775--87.
+\url{https://doi.org/10.1198/016214504000001114}.
+
+\bibitem[\citeproctext]{ref-Narayan2015}
+Narayan, Paresh Kumar, and Ruipeng Liu. 2015. {``A Unit Root Model for
+Trending Time-Series Energy Variables: An Application to {US} Stock
+Prices.''} \emph{Energy Economics} 50: 391--402.
+\url{https://doi.org/10.1016/j.eneco.2014.11.021}.
+
+\end{CSLReferences}

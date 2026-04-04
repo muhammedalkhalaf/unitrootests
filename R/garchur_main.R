@@ -54,6 +54,7 @@
 #' res <- garchur(y, breaks = 2, model = "ct")
 #' print(res)
 #'
+#' @importFrom stats lm.fit plogis optim
 #' @export
 garchur <- function(y,
                     breaks = 2L,

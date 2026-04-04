@@ -70,11 +70,7 @@ print.qadf <- function(x, digits = 4L, ...) {
 }
 
 
-#' Summary method for qadf objects
-#'
-#' @param object An object of class \code{"qadf"}.
-#' @param ... Further arguments passed to \code{print.qadf}.
-#' @return Invisibly returns \code{object}.
+# summary.qadf - see print.qadf documentation
 #' @export
 summary.qadf <- function(object, ...) {
   print(object, ...)
