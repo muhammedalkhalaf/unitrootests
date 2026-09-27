@@ -45,7 +45,7 @@
 #'
 #' Hansen, B. E. (1995). Rethinking the Univariate Approach to Unit Root
 #' Tests: How to Use Covariates to Increase Power. \emph{Econometric Theory},
-#' 11(5), 1148--1171. \doi{10.1017/S0266466600009713}
+#' 11(5), 1148--1171. \doi{10.1017/S0266466600009993}
 #'
 #' @examples
 #' set.seed(42)
