@@ -1,13 +1,12 @@
-## unitrootests 1.1.1
+## unitrootests 1.1.2
 
-* Corrected the DOI of Hansen (1995) to 10.1017/S0266466600009993 in R and Rd files. No changes to code.
+This release corrects the computations below; the 1.1.1 submission (reference metadata only) should be discarded in favour of this one.
 
-All DOIs in the package were verified against CrossRef before this submission.
+* Bug fix in `qadf()` (the same corrections as in the qadf package 1.0.2): the quantile autoregression is now estimated in levels, so `rho_tau` is rho rather than rho - 1; the statistic follows equation (9) of Koenker and Xiao (2004); the critical values of Hansen (1995) are interpolated in the estimated delta^2 instead of being indexed by tau; `delta2` is the squared correlation between the differenced series and psi_tau of the quantile residuals; and lag selection uses a common sample. For `model = "c"` the result agrees with the Stata command qadf (SSC).
 
 ## Test environments
 
-* Ubuntu 24.04, R 4.3.3 (R CMD check --as-cran)
-* CRAN check results for the previous version: OK on all platforms
+* Ubuntu 24.04, R 4.3.3 and R-devel, R CMD check --as-cran
 
 ## R CMD check results
 

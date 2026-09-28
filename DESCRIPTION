@@ -1,7 +1,7 @@
 Package: unitrootests
 Type: Package
 Title: Comprehensive Unit Root and Stationarity Tests
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: person("Muhammad Abdullah", "Alkhalaf", email = "muhammedalkhalaf@gmail.com",
     role = c("aut", "cre", "cph"),
     comment = c(ORCID = "0009-0002-2677-9246"))
@@ -15,7 +15,6 @@ Description: A unified framework for unit root and stationarity testing
     (Elder and Kennedy, 2001) <doi:10.1080/00220480109595179>.
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.3.3
 Depends: R (>= 3.5.0)
 Imports:
     stats,
@@ -27,3 +26,4 @@ Suggests:
     testthat (>= 3.0.0),
     zoo
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0

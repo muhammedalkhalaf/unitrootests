@@ -6,26 +6,32 @@ S3method(summary,qadf)
 export(garchur)
 export(qadf)
 export(urstat)
-importFrom(quantreg,rq)
-importFrom(stats,AIC)
-importFrom(stats,BIC)
-importFrom(stats,approx)
-importFrom(stats,coef)
-importFrom(stats,cor)
-importFrom(stats,dnorm)
-importFrom(stats,lag)
-importFrom(stats,lm)
-importFrom(stats,lm.fit)
-importFrom(stats,logLik)
-importFrom(stats,optim)
-importFrom(stats,plogis)
-importFrom(stats,qnorm)
-importFrom(stats,residuals)
-importFrom(stats,setNames)
-importFrom(stats,var)
-importFrom(stats,vcov)
+importFrom(quantreg,rq.fit)
+importFrom(stats,
+  AIC,
+  BIC,
+  approx,
+  coef,
+  cor,
+  cov,
+  dnorm,
+  lag,
+  lm,
+  lm.fit,
+  logLik,
+  optim,
+  plogis,
+  qnorm,
+  residuals,
+  sd,
+  setNames,
+  var,
+  vcov
+)
 importFrom(strucchange,Fstats)
-importFrom(tseries,adf.test)
-importFrom(tseries,kpss.test)
-importFrom(tseries,pp.test)
+importFrom(tseries,
+  adf.test,
+  kpss.test,
+  pp.test
+)
 importFrom(urca,ur.ers)
