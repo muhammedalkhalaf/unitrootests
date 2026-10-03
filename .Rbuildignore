@@ -6,3 +6,4 @@
 ^paper\.md$
 ^paper\.tex$
 ^paper\.bib$
+^\.zenodo\.json$
